@@ -1,0 +1,29 @@
+.productListDiv {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    
+    padding: 10px;
+    width: 100%;
+}
+
+.productImage {
+    height: 180px;
+    width: 70%;
+    background-color: white;
+}
+
+.productListContainer {
+    display: flex;
+    justify-content: center; /* Aligns items horizontally */
+    align-items: center; /* Aligns items vertically */
+    background-color: white;
+    height: 60vh;
+}
+
+.productItem {
+    background-color: white;
+    margin: 10px; /* outside border */
+    padding: 10px; /* within border */
+    border: 1px solid black;
+    flex: 1;
+}

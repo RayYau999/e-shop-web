@@ -1,0 +1,9 @@
+.commonHeaderContainer {
+    background-color: #ff7900;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: large;
+    align-content: flex-start;
+    display: flex;
+    color: white
+    ;
+}
