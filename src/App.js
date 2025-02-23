@@ -8,35 +8,33 @@ import {useState, useRef} from "react";
 import ProductDetail from "./feature/productDetails/ProductDetail.js";
 import CommonHeader from './feature/commonHeader/CommonHeader.js';
 import Cart from './feature/cart/Cart.js';
+import Login from "./feature/login/LoginPage";
 
 function App() {
   const [stateCount, setStateCount] = useState(0);
   const refCount = useRef(0);
+  //for login token
+  const [token, setToken] = useState();
 
-  const handleButtonOnClick = () => {
-    setStateCount(stateCount + 1);
-    refCount.current++;
-    
-    console.log(stateCount + 1);
-    console.log("refCount: " + parseInt(refCount.current));
-    console.log("state setted: " + stateCount);
+  if(!token) {
+    return <Login setToken={setToken}/>
   }
 
   return (
-    <div>
       <div>
-        
-        <BrowserRouter>
-          <CommonHeader/>
+        <div>
+
+          <BrowserRouter>
+            <CommonHeader />
             <Routes>
-              <Route path='/' element={<ProductList/>}/>
-              <Route path="/checkout" element={<Checkout/>}/>
-              <Route path="/product_details/:id" element={<ProductDetail/>}/>
-              <Route path='/cart' element={<Cart/>}/>
+              <Route path='/' element={<ProductList />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/product_details/:id" element={<ProductDetail />} />
+              <Route path='/cart' element={<Cart />} />
             </Routes>
-        </BrowserRouter>
+          </BrowserRouter>
+        </div>
       </div>
-    </div>
   );
 }
 
