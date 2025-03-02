@@ -32,6 +32,16 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 - Or you can bypass the authentication by clicking the "Bypass login button" button
 ```
 
+3. Register function with Django backend
+```
+- Clone "https://github.com/RayYau999/DjangoProject.git" (my Django project)
+- Run the Django project (refer to the Readme.md in the Django project)
+- Go to Login Page ("https:localhost:3000/login")
+- Click the "Register" button
+- Enter the username and password you want to register (email is optional)
+- Click the "submit" button
+- back to the login page and enter the username and password you just registered
+```
 ## Main library used
 1. Meterial UI
 2. React Bootstrap

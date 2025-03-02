@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import './LoginPage.module.css';
 import {Button} from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import RegistrationPage from "../registration/RegistrationPage";
 
 async function loginUser(credentials) {
     console.log(JSON.stringify(credentials))
@@ -15,7 +17,9 @@ async function loginUser(credentials) {
         .then(data => data.json())
 }
 
-export default function Login({ setToken }) {
+export default function Login({ setToken, setIsRegister }) {
+    const navigate = useNavigate();
+
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
 
@@ -40,6 +44,11 @@ export default function Login({ setToken }) {
         setToken("something");
     }
 
+    const handleRegistration = () =>{
+        console.log("set is regis to true")
+        setIsRegister(true);
+    }
+
     return(
         <div className="login-wrapper">
             <h1>Please Log In</h1>
@@ -56,11 +65,13 @@ export default function Login({ setToken }) {
                     <button type="submit">Submit</button>
                 </div>
             </form>
+            <Button onClick={handleRegistration}>Register</Button>
             <Button onClick={bypassLogin}>Bypass login button</Button>
         </div>
     )
 }
 
 Login.propTypes = {
-    setToken: PropTypes.func.isRequired
+    setToken: PropTypes.func.isRequired,
+    setIsRegister: PropTypes.func.isRequired
 };
