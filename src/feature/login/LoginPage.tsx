@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import * as React from 'react';
+import { useState } from 'react';
+import * as PropTypes from 'prop-types';
 import './LoginPage.module.css';
 import {Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import RegistrationPage from "../registration/RegistrationPage";
 
 const apiUrl = process.env.REACT_APP_DJ_API_URL;
 
@@ -23,8 +23,8 @@ async function loginUser(credentials) {
 export default function Login({ setToken, setIsRegister }) {
     const navigate = useNavigate();
 
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
+    const [username, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
 
     const handleSubmit = async e => {
         e.preventDefault();

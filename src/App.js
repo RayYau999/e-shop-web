@@ -8,7 +8,7 @@ import {useState, useRef, useEffect} from "react";
 import ProductDetail from "./feature/productDetails/ProductDetail.js";
 import CommonHeader from './feature/commonHeader/CommonHeader.js';
 import Cart from './feature/cart/Cart.js';
-import Login from "./feature/login/LoginPage";
+import Login from "./feature/login/LoginPage.tsx";
 import Registration from "./feature/registration/RegistrationPage";
 
 function App() {
