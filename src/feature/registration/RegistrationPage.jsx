@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {Button} from "react-bootstrap";
 
 export default function RegistrationPage() {
+
+    const apiUrl = process.env.REACT_APP_DJ_API_URL;
 
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
@@ -10,7 +11,8 @@ export default function RegistrationPage() {
     const [success, setSuccess] = useState(false);
     const registerUser = async (credentials) => {
         console.log(JSON.stringify(credentials))
-        return fetch('http://127.0.0.1:8000/loginapi/register/', {
+        console.log("apiUrl: ", apiUrl)
+        return fetch(apiUrl + '/loginapi/register/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

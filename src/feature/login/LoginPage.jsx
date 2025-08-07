@@ -5,9 +5,12 @@ import {Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import RegistrationPage from "../registration/RegistrationPage";
 
+const apiUrl = process.env.REACT_APP_DJ_API_URL;
+
 async function loginUser(credentials) {
     console.log(JSON.stringify(credentials))
-    return fetch('http://127.0.0.1:8000/loginapi/login/', {
+    console.log("apiUrl: ", apiUrl)
+    return fetch(apiUrl + '/loginapi/login/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

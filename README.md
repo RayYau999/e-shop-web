@@ -48,3 +48,10 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 3. Redux
 4. Redux-toolkit
 3. Redux-persist
+
+## Deploy container to minikube cluster notes
+1. Get into minikube docker environment (you can choose to copy docker desktop image to minikube docker or build image in minikube docker, I choose the second one)
+   ```eval $(minikube docker-env)```
+2. You may need to build react app by running ```npm run build``` if the dockerfile build image from local project build dict
+1. cd to project folder and Create image ```docker build -t e-shop-web:latest .```
+2. expose service ```minikube service e-shop-web-service```
