@@ -10,6 +10,7 @@ import CommonHeader from './feature/commonHeader/CommonHeader.js';
 import Cart from './feature/cart/Cart.js';
 import Login from "./feature/login/LoginPage.tsx";
 import Registration from "./feature/registration/RegistrationPage";
+import Chatbot from "./feature/chatbot/Chatbot.tsx";
 
 function App() {
     const [stateCount, setStateCount] = useState(0);
@@ -41,6 +42,7 @@ function App() {
                     <Route path="/product_details/:id" element={<ProductDetail />} />
                     <Route path='/cart' element={<Cart />} />
                 </Routes>
+                <Chatbot />
             </div>
         </div>
     );
