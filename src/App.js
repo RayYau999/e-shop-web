@@ -11,6 +11,7 @@ import Cart from './feature/cart/Cart.js';
 import Login from "./feature/login/LoginPage.tsx";
 import Registration from "./feature/registration/RegistrationPage";
 import Chatbot from "./feature/chatbot/Chatbot.tsx";
+import LoginPageWithSb from "./feature/login/LoginPageWithSb.tsx";
 
 function App() {
     const [stateCount, setStateCount] = useState(0);
@@ -26,7 +27,7 @@ function App() {
         if(isRegister){
             return <Registration/>
         }
-        return <Login setToken={setToken} setIsRegister={setIsRegister}/>
+        return <LoginPageWithSb setToken={setToken} setIsRegister={setIsRegister}/>
     }
 
 

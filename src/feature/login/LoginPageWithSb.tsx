@@ -5,12 +5,18 @@ import './LoginPage.module.css';
 import {Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const apiUrl = process.env.REACT_APP_DJ_API_URL;
+const apiUrl = process.env.REACT_APP_SB_API_URL;
+
+interface AuthResponse {
+    token: string;
+    createdAt: string;
+    expiresAt: string;
+}
 
 async function loginUser(credentials) {
     console.log(JSON.stringify(credentials))
     console.log("apiUrl: ", apiUrl)
-    return fetch(apiUrl + '/loginapi/login/', {
+    return fetch(apiUrl + '/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -20,7 +26,7 @@ async function loginUser(credentials) {
         .then(data => data.json())
 }
 
-export default function Login({ setToken, setIsRegister }) {
+export default function LoginPageWithSb({ setToken, setIsRegister }) {
     const navigate = useNavigate();
 
     const [username, setUserName] = useState<string>("");
@@ -28,10 +34,12 @@ export default function Login({ setToken, setIsRegister }) {
 
     const handleSubmit = async e => {
         e.preventDefault();
-        const response = await loginUser({
+        console.log("start to submit login form")
+        const response: AuthResponse = await loginUser({
             username,
             password
         });
+        console.log("start to submit login form 2")
         if(!response.token) {
             console.log("token is empty ")
             setToken('');
@@ -54,7 +62,7 @@ export default function Login({ setToken, setIsRegister }) {
 
     return(
         <div className="login-wrapper">
-            <h2>This is jwt login implementation with Django</h2>
+            <h2>This is jwt login implementation with Spring boot</h2>
             <h1>Please Log In</h1>
             <form onSubmit={handleSubmit}>
                 <label>
@@ -75,7 +83,7 @@ export default function Login({ setToken, setIsRegister }) {
     )
 }
 
-Login.propTypes = {
+LoginPageWithSb.propTypes = {
     setToken: PropTypes.func.isRequired,
     setIsRegister: PropTypes.func.isRequired
 };
