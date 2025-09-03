@@ -12,6 +12,9 @@ import Login from "./feature/login/LoginPage.tsx";
 import Registration from "./feature/registration/RegistrationPage";
 import Chatbot from "./feature/chatbot/Chatbot.tsx";
 import LoginPageWithSb from "./feature/login/LoginPageWithSb.tsx";
+import PaymentConfirmationPage from "./feature/payment/PaymentConfirmationPage.tsx";
+import PaymentErrorPage from "./feature/payment/PaymentErrorPage.tsx";
+import CheckoutPage from "./feature/checkout/CheckoutPage.tsx";
 
 function App() {
     const [stateCount, setStateCount] = useState(0);
@@ -39,9 +42,12 @@ function App() {
                 <CommonHeader />
                 <Routes>
                     <Route path='/' element={<ProductList />} />
-                    <Route path="/checkout" element={<Checkout />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/product_details/:id" element={<ProductDetail />} />
                     <Route path='/cart' element={<Cart />} />
+                    <Route path='/payment-success' element={<PaymentConfirmationPage />} />
+                    <Route path='/payment-error' element={<PaymentErrorPage />} />
+
                 </Routes>
                 <Chatbot />
             </div>

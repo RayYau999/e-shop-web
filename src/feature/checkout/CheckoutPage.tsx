@@ -6,11 +6,11 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid2';
 import Item from '@mui/material/Grid';
 import {Container, Row, Col, Button} from 'react-bootstrap';
-import style from './Cart.module.css'
+import style from './CheckoutPage.module.css'
 import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
 import {useNavigate} from "react-router-dom";
 
-export default function Cart() {
+export default function CheckoutPage() {
     const navigate = useNavigate();
     const cart = useSelector((state) => state.cart)
     const [countArray, setCountArray] = useState([]);
@@ -18,9 +18,7 @@ export default function Cart() {
     const dispatch = useDispatch()
     const totalAmount = cart.items.reduce((total, product) => total + product.price, 0);
 
-    const handleClearCartClick = () => {
-        dispatch(clearItems());
-    }
+
 
     const findProductById = (id) => {
         return cart.items.find(product => product.id === parseInt(id))
@@ -75,22 +73,26 @@ export default function Cart() {
                         }
                     </Row>
                     <Row>total {totalAmount}</Row>
+
+                    <h2>Pay now</h2>
                     <PayPalScriptProvider
                         options={{
-                            "client-id": "Ac5Ir65beQfsbrSGQeBzAHWAIphMBN6K00X57cnltvY-Iyxk5egnPR2_UkE32FTmEQ6Ms89xsKlAus1d", // Replace with your actual PayPal Client ID
+                            clientId: "Ac5Ir65beQfsbrSGQeBzAHWAIphMBN6K00X57cnltvY-Iyxk5egnPR2_UkE32FTmEQ6Ms89xsKlAus1d", // Replace with your actual PayPal Client ID
                             currency: "USD", // Adjust the currency code as needed
                         }}
                     >
                         <PayPalButtons
                             createOrder={(data, actions) => {
                                 return actions.order.create({
+                                    intent: 'CAPTURE', // REQUIRED to satisfy type
                                     purchase_units: [
                                         {
                                             amount: {
-                                                value: totalAmount.toFixed(2),
-                                            },
-                                        },
-                                    ],
+                                                currency_code: 'USD',
+                                                value: totalAmount.toFixed(2)
+                                            }
+                                        }
+                                    ]
                                 });
                             }}
                             onApprove={(data, actions) => {
@@ -99,11 +101,9 @@ export default function Cart() {
                             onError={handlePaymentError}
                         />
                     </PayPalScriptProvider>
-                    <Button variant="primary" onClick={handleClearCartClick}>
-                        Clear cart
-                    </Button></div>
+                    </div>
             }
 
         </Container>
-    );
+    )
 }
