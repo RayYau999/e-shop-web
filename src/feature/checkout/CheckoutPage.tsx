@@ -9,6 +9,7 @@ import {Container, Row, Col, Button} from 'react-bootstrap';
 import style from './CheckoutPage.module.css'
 import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
 import {useNavigate} from "react-router-dom";
+import PaypalButtonLogic from "../payment/PaypalButtonLogic.tsx";
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
@@ -81,25 +82,7 @@ export default function CheckoutPage() {
                             currency: "USD", // Adjust the currency code as needed
                         }}
                     >
-                        <PayPalButtons
-                            createOrder={(data, actions) => {
-                                return actions.order.create({
-                                    intent: 'CAPTURE', // REQUIRED to satisfy type
-                                    purchase_units: [
-                                        {
-                                            amount: {
-                                                currency_code: 'USD',
-                                                value: totalAmount.toFixed(2)
-                                            }
-                                        }
-                                    ]
-                                });
-                            }}
-                            onApprove={(data, actions) => {
-                                return actions.order.capture().then(handlePaymentSuccess);
-                            }}
-                            onError={handlePaymentError}
-                        />
+                        <PaypalButtonLogic totalAmount={totalAmount}/>
                     </PayPalScriptProvider>
                     </div>
             }

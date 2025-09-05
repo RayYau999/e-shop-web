@@ -75,30 +75,6 @@ export default function Cart() {
                         }
                     </Row>
                     <Row>total {totalAmount}</Row>
-                    <PayPalScriptProvider
-                        options={{
-                            "client-id": "Ac5Ir65beQfsbrSGQeBzAHWAIphMBN6K00X57cnltvY-Iyxk5egnPR2_UkE32FTmEQ6Ms89xsKlAus1d", // Replace with your actual PayPal Client ID
-                            currency: "USD", // Adjust the currency code as needed
-                        }}
-                    >
-                        <PayPalButtons
-                            createOrder={(data, actions) => {
-                                return actions.order.create({
-                                    purchase_units: [
-                                        {
-                                            amount: {
-                                                value: totalAmount.toFixed(2),
-                                            },
-                                        },
-                                    ],
-                                });
-                            }}
-                            onApprove={(data, actions) => {
-                                return actions.order.capture().then(handlePaymentSuccess);
-                            }}
-                            onError={handlePaymentError}
-                        />
-                    </PayPalScriptProvider>
                     <Button variant="primary" onClick={handleClearCartClick}>
                         Clear cart
                     </Button></div>
