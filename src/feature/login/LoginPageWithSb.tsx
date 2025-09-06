@@ -4,6 +4,8 @@ import * as PropTypes from 'prop-types';
 import './LoginPage.module.css';
 import {Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {addToken} from '../../state/jwtSlice.tsx'
+import { useDispatch } from "react-redux";
 
 const apiUrl = process.env.REACT_APP_SB_API_URL;
 
@@ -27,6 +29,8 @@ async function loginUser(credentials) {
 }
 
 export default function LoginPageWithSb({ setToken, setIsRegister }) {
+
+    const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const [username, setUserName] = useState<string>("");
@@ -47,6 +51,12 @@ export default function LoginPageWithSb({ setToken, setIsRegister }) {
             const token = response.token;
             console.log("token: ", token)
             setToken(token);
+            try {
+                dispatch(addToken(token))
+                console.log("added token to redux")
+            } catch (e) {
+                console.log("error in adding token to redux: ", e);
+            }
         }
 
     }

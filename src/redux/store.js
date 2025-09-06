@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import counterReducer from './counterSlice'
 import cartSlice from '../state/cartSlice'
+import jwtSlice from "../state/jwtSlice.tsx";
 
 const persistConfig = {
   key: 'root',
@@ -14,6 +15,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   counter: counterReducer,
   cart: cartSlice,
+  jwt: jwtSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

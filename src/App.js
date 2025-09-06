@@ -15,7 +15,7 @@ import LoginPageWithSb from "./feature/login/LoginPageWithSb.tsx";
 import PaymentConfirmationPage from "./feature/payment/PaymentConfirmationPage.tsx";
 import PaymentErrorPage from "./feature/payment/PaymentErrorPage.tsx";
 import CheckoutPage from "./feature/checkout/CheckoutPage.tsx";
-
+import OrderPage from "./feature/order/OrderPage.tsx";
 function App() {
     const [stateCount, setStateCount] = useState(0);
     const refCount = useRef(0);
@@ -47,6 +47,7 @@ function App() {
                     <Route path='/cart' element={<Cart />} />
                     <Route path='/payment-success' element={<PaymentConfirmationPage />} />
                     <Route path='/payment-error' element={<PaymentErrorPage />} />
+                    <Route path='/view-order' element={<OrderPage />} />
 
                 </Routes>
                 <Chatbot />
