@@ -1,15 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {PUBLIC_ASSETS_URL} from "../../Constant";
-import {clearItems} from '../../state/cartSlice'
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2';
-import Item from '@mui/material/Grid';
-import {Container, Row, Col, Button} from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { Col, Container, Row } from 'react-bootstrap';
 import style from './CheckoutPage.module.css'
-import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
-import {useNavigate} from "react-router-dom";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { useNavigate } from "react-router-dom";
 import PaypalButtonLogic from "../payment/PaypalButtonLogic.tsx";
+import {useState, useEffect} from "react";
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
