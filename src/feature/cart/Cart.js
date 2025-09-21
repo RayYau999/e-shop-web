@@ -68,7 +68,7 @@ export default function Cart() {
                                                 <div>Number of order: {countArray[id]}</div>
                                                 <div>Price: {product.price * countArray[id]}</div>
                                             </div>
-                                        </Col>
+                                        </Col>x`
                                     </>
                                 );
                             })
@@ -77,7 +77,8 @@ export default function Cart() {
                     <Row>total {totalAmount}</Row>
                     <Button variant="primary" onClick={handleClearCartClick}>
                         Clear cart
-                    </Button></div>
+                    </Button>
+                </div>
             }
 
         </Container>
