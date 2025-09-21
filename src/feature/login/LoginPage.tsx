@@ -5,12 +5,12 @@ import './LoginPage.module.css';
 import {Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-const apiUrl = process.env.REACT_APP_DJ_API_URL;
+const apiUrl = process.env.REACT_APP_SB_API_URL;
 
 async function loginUser(credentials) {
     console.log(JSON.stringify(credentials))
     console.log("apiUrl: ", apiUrl)
-    return fetch(apiUrl + '/loginapi/login/', {
+    return fetch(apiUrl + '/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

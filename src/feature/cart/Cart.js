@@ -68,7 +68,7 @@ export default function Cart() {
                                                 <div>Number of order: {countArray[id]}</div>
                                                 <div>Price: {product.price * countArray[id]}</div>
                                             </div>
-                                        </Col>x`
+                                        </Col>
                                     </>
                                 );
                             })
