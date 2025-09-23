@@ -5,6 +5,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import PaypalButtonLogic from "../payment/PaypalButtonLogic.tsx";
 import {useState, useEffect} from "react";
+import { OrderReqDto, ProductDto } from "../type/EShopCommonTypes.ts";
 
 export default function CheckoutPage() {
     const navigate = useNavigate();
@@ -13,11 +14,23 @@ export default function CheckoutPage() {
     const [isEmpty, setIsEmpty] = useState(false);
     const dispatch = useDispatch()
     const totalAmount = cart.items.reduce((total, product) => total + product.price, 0);
-
+    const clientId = process.env.REACT_APP_PAYPAL_CLIENT_ID;
 
 
     const findProductById = (id) => {
         return cart.items.find(product => product.id === parseInt(id))
+    }
+
+    const orderDto: OrderReqDto = {
+        products: [],
+        totalPrice: totalAmount
+    };
+
+    //This function is outdated because it will call many order query to DB
+    const setProductObjById = (id) => {
+        const product = cart.items.find(product => product.id === parseInt(id));
+        orderDto.products.push({productId: product.id, quantity: countArray[id], price: product.price});
+        console.log("pushed product to orderDto: ", orderDto);
     }
     useEffect(() => {
         setCountArray(cart.items.reduce((acc, product) => {
@@ -27,6 +40,7 @@ export default function CheckoutPage() {
 
         console.log(countArray);
         console.log("totalAmount: "+ totalAmount)
+        console.log("show clientId", clientId)
 
         setIsEmpty(cart.items.length === 0);
     }, [cart.items]);
@@ -73,13 +87,13 @@ export default function CheckoutPage() {
                     <h2>Pay now</h2>
                     <PayPalScriptProvider
                         options={{
-                            clientId: "Ac5Ir65beQfsbrSGQeBzAHWAIphMBN6K00X57cnltvY-Iyxk5egnPR2_UkE32FTmEQ6Ms89xsKlAus1d", // Replace with your actual PayPal Client ID
+                            clientId: clientId, // Replace with your actual PayPal Client ID
                             currency: "USD", // Adjust the currency code as needed
                         }}
                     >
-                        <PaypalButtonLogic totalAmount={totalAmount}/>
+                        <PaypalButtonLogic totalAmount={totalAmount} orderDto={orderDto}/>
                     </PayPalScriptProvider>
-                    </div>
+                </div>
             }
 
         </Container>
