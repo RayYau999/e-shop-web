@@ -6,7 +6,7 @@ interface JwtState {
 
 const jwtSlice = createSlice({
     name: 'jwt',
-    initialState: { jwtState: { token: '' } } as JwtState,
+    initialState: {token: ''} as JwtState,
     reducers: {
         addToken: (state, action) => {
             state.token = action.payload;
