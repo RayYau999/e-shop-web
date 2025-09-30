@@ -3,7 +3,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch.tsx";
-import { EShopCommonFetchProps, OrderReqDto } from "../type/EShopCommonTypes.ts";
+import { EShopCommonFetchProps, OrderReqDto, PaymentStatus } from "../type/EShopCommonTypes.ts";
 
 const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
     const [loading, setLoading] = useState(false); // Loading state
@@ -43,10 +43,9 @@ const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
                 console.log("trying to verify payment..., with captureId: " + captureId);
                 console.log("reqData in checking payment status: ", reqData);
                 // const response = await fetch(`http://localhost:8081/webhook/paypal/status/${captureId}`);
-                const response = await fetchEShopData(reqData)
-                console.log("payment status response: ", response);
-                const paymentStatus = await response.json();
-
+                const response: PaymentStatus = await fetchEShopData(reqData)
+                const paymentStatus: PaymentStatus = await response.json();
+                console.log("PaymentStatus JSON:", paymentStatus);
                 if (response.ok && paymentStatus.status === "COMPLETED") {
                     console.log("Payment confirmed:", paymentStatus);
                     navigate("/payment-success", { state: { paymentDetails: paymentStatus.details } });

@@ -15,3 +15,11 @@ export type ProductDto = {
     price: number,
     quantity: number
 }
+
+export type PaymentStatus = {
+    id: number;
+    paymentId: string;
+    status: 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED';
+    amount: number;
+    currency: string;
+}

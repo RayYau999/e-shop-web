@@ -8,8 +8,8 @@ const useGetJwt = () => {
     return jwt
 }
 
-const fetchEShopData = async (props: EShopCommonFetchProps) =>{
-    const jwt = props.jwt??"";
+const fetchEShopData = async (props: EShopCommonFetchProps) => {
+    const jwt = props.jwt ?? "";
     const controller = new AbortController();
 
     console.log("showing jwt in fetchEShopData: ", jwt);
@@ -23,7 +23,7 @@ const fetchEShopData = async (props: EShopCommonFetchProps) =>{
         body: props.body ? JSON.stringify(props.body) : undefined,
         signal: controller.signal
     });
-    console.log("res: ", await res.json());
+
     return res;
 
 }
