@@ -3,7 +3,7 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch.tsx";
-import { EShopCommonFetchProps, OrderReqDto, PaymentStatus } from "../type/EShopCommonTypes.ts";
+import { EShopCommonFetchProps, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes.ts";
 
 const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
     const [loading, setLoading] = useState(false); // Loading state
@@ -48,7 +48,8 @@ const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
                 console.log("PaymentStatus JSON:", paymentStatus);
                 if (response.ok && paymentStatus.status === "COMPLETED") {
                     console.log("Payment confirmed:", paymentStatus);
-                    navigate("/payment-success", { state: { paymentDetails: paymentStatus.details } });
+
+                    navigate("/payment-success", { state: { paymentDetails: paymentStatus } });
                     setLoading(false); // Stop loading
                     return; // Exit function after success
                 } else {

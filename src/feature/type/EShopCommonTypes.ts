@@ -23,3 +23,10 @@ export type PaymentStatus = {
     amount: number;
     currency: string;
 }
+
+export type PaymentStatusDto = {
+    paymentId: string;
+    status: 'COMPLETED' | 'PENDING' | 'FAILED' | 'CANCELLED';
+    amount: number;
+    currency: string;
+}
