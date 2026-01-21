@@ -1,9 +1,9 @@
 import { configureStore, combineReducers} from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import counterReducer from './counterSlice'
+import counterReducer from '../state/counterSlice'
 import cartSlice from '../state/cartSlice'
-import jwtSlice from "../state/jwtSlice.tsx";
+import jwtSlice from "../state/jwtSlice";
 
 const persistConfig = {
   key: 'root',
@@ -24,5 +24,6 @@ const store = configureStore({ reducer: persistedReducer })
 
 console.log(store.getState())
 
+export type RootState = ReturnType<typeof rootReducer>;
 export const persistor = persistStore(store);
 export default store;

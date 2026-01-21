@@ -2,15 +2,34 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch.tsx";
-import { EShopCommonFetchProps, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes.ts";
+import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch";
+import { EShopCommonFetchProps, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes";
 
-const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
+interface PayPalCaptureDetails {
+    id?: string;
+    purchase_units?: Array<{
+        payments?: {
+            captures?: Array<{
+                id: string;
+                status?: string;
+                amount?: { currency_code?: string; value?: string };
+            }>;
+        };
+    }>;
+    payer?: { email_address?: string; name?: { given_name?: string; surname?: string } };
+}
+
+interface PayPalButtonLogicProps {
+    totalAmount: number;
+    orderDto: OrderReqDto;
+}
+
+const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
     const [loading, setLoading] = useState(false); // Loading state
     const navigate = useNavigate();
     const jwt = useGetJwt();
 
-    const handlePaymentSuccess = async (details) => {
+    const handlePaymentSuccess = async (details: PayPalCaptureDetails) => {
         console.log("Payment Successful testing:", details);
         console.log("handlePaymentSuccess:: orderDto: ", orderDto)
         setLoading(true); // Show loading indicator
@@ -43,8 +62,9 @@ const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
                 console.log("trying to verify payment..., with captureId: " + captureId);
                 console.log("reqData in checking payment status: ", reqData);
                 // const response = await fetch(`http://localhost:8081/webhook/paypal/status/${captureId}`);
-                const response: PaymentStatus = await fetchEShopData(reqData)
-                const paymentStatus: PaymentStatus = await response.json();
+                const apiResult = await fetchEShopData(reqData)
+                const response = apiResult.response;
+                const paymentStatus: PaymentStatus = apiResult.data;
                 console.log("PaymentStatus JSON:", paymentStatus);
                 if (response.ok && paymentStatus.status === "COMPLETED") {
                     console.log("Payment confirmed:", paymentStatus);
@@ -55,7 +75,7 @@ const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
                 } else {
                     console.log("Payment still pending...");
                 }
-            } catch (error) {
+            } catch (error: any) {
                 console.error("Error while checking payment status:", error.message);
             }
 
@@ -92,9 +112,25 @@ const PayPalButtonLogic = ({ totalAmount, orderDto }) => {
                         ]
                     });
                 }}
-                onApprove={(data, actions) => {
+                onApprove={async (data, actions) => {
                     console.log("Approved data:", data);
-                    return actions.order.capture().then(handlePaymentSuccess);
+                    const capture = await actions?.order?.capture;
+                    if (typeof capture !== "function") {
+                        console.error("PayPal actions.order is not available");
+                        alert("An error occurred during payment processing. Please try again.");
+                        navigate("/payment-error");
+                        return Promise.reject(new Error("PayPal actions.order is not available"));
+                    }
+
+                    try {
+                        const captureDetails = await capture();
+                        return handlePaymentSuccess(captureDetails as PayPalCaptureDetails);
+                    } catch (err) {
+                        console.error("Capture failed:", err);
+                        alert("An error occurred during the payment process. Please try again.");
+                        navigate("/payment-error");
+                        return Promise.reject(err instanceof Error ? err : new Error(String(err)));
+                    }
                 }}
                 onError={(err) => {
                     console.error("PayPal Checkout Error:", err);

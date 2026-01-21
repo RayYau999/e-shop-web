@@ -30,3 +30,27 @@ export type PaymentStatusDto = {
     amount: number;
     currency: string;
 }
+
+export interface Product {
+    id: number;
+    name: string;
+    description: string;
+    price: number;
+    image: string;
+}
+
+export interface Credentials {
+    username: string;
+    password: string;
+}
+
+export interface RegisterCredentials {
+    email: string;
+    username: string;
+    password: string;
+}
+
+export interface PaypalOptions {
+    clientId: string;
+    currency?: string;
+}

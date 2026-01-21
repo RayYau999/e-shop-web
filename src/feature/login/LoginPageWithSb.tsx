@@ -4,8 +4,9 @@ import * as PropTypes from 'prop-types';
 import './LoginPage.module.css';
 import {Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {addToken} from '../../state/jwtSlice.tsx'
+import {addToken} from '../../state/jwtSlice'
 import { useDispatch } from "react-redux";
+import {Credentials} from "../type/EShopCommonTypes";
 
 const apiUrl = process.env.REACT_APP_SB_API_URL;
 
@@ -15,7 +16,12 @@ interface AuthResponse {
     expiresAt: string;
 }
 
-async function loginUser(credentials) {
+type LoginPageWithSbProps = {
+    setToken: React.Dispatch<React.SetStateAction<string | undefined>>;
+    setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+async function loginUser(credentials: Credentials) {
     console.log(JSON.stringify(credentials))
     console.log("apiUrl: ", apiUrl)
     return fetch(apiUrl + '/login', {
@@ -28,7 +34,7 @@ async function loginUser(credentials) {
         .then(data => data.json())
 }
 
-export default function LoginPageWithSb({ setToken, setIsRegister }) {
+export default function LoginPageWithSb({ setToken, setIsRegister }: LoginPageWithSbProps) {
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -36,7 +42,7 @@ export default function LoginPageWithSb({ setToken, setIsRegister }) {
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e:  React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("start to submit login form")
         const response: AuthResponse = await loginUser({
