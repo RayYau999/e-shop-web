@@ -8,12 +8,12 @@ import CommonHeader from './feature/commonHeader/CommonHeader';
 import Cart from './feature/cart/Cart';
 // import Login from "./feature/login/LoginPage";
 import Registration from "./feature/registration/RegistrationPage";
-// import Chatbot from "./feature/chatbot/Chatbot";
 import LoginPageWithSb from "./feature/login/LoginPageWithSb";
 import PaymentConfirmationPage from "./feature/payment/PaymentConfirmationPage";
 import PaymentErrorPage from "./feature/payment/PaymentErrorPage";
 import CheckoutPage from "./feature/checkout/CheckoutPage";
 import OrderPage from "./feature/order/OrderPage";
+import Chatbot from "./feature/chatbot/Chatbot";
 function App() {
     const [stateCount, setStateCount] = useState(0);
     const refCount = useRef(0);
@@ -47,7 +47,7 @@ function App() {
                     <Route path='/payment-error' element={<PaymentErrorPage />} />
                     <Route path='/view-order' element={<OrderPage />} />
                 </Routes>
-                {/*<Chatbot />*/}
+                <Chatbot />
             </div>
         </div>
     );
