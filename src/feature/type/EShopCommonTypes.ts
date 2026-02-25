@@ -54,3 +54,11 @@ export interface PaypalOptions {
     clientId: string;
     currency?: string;
 }
+
+export interface McpRequestMsg {
+    message: string;
+}
+
+export interface McpResponseMsg {
+    mcpResponse: string;
+}
