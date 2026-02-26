@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
-
+import {Credentials, RegisterCredentials} from "../type/EShopCommonTypes";
 export default function RegistrationPage() {
 
     const apiUrl = process.env.REACT_APP_DJ_API_URL;
 
-    const [username, setUserName] = useState();
-    const [password, setPassword] = useState();
-    const [email, setEmail] = useState();
+    const [username, setUserName] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [userExists, setUserExists] = useState(false);
     const [success, setSuccess] = useState(false);
-    const registerUser = async (credentials) => {
+    const registerUser = async (credentials: Credentials) => {
         console.log(JSON.stringify(credentials))
         console.log("apiUrl: ", apiUrl)
         return fetch(apiUrl + '/loginapi/register/', {
@@ -22,13 +22,16 @@ export default function RegistrationPage() {
             .then(data => data.json())
     }
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e:  React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await registerUser({
+
+        const registerCredentials: RegisterCredentials = {
             username,
             password,
             email
-        });
+        };
+
+        const response = await registerUser(registerCredentials);
         console.log("response: ", response)
         console.log("response status: ", response.status)
         if (response.status === 201) {

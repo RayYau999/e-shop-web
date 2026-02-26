@@ -1,27 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
-import './feature/productList/ProductList.js'
-import ProductList from './feature/productList/ProductList.js';
+import ProductList from './feature/productList/ProductList';
 import {BrowserRouter, Routes, Route, Link, useLocation} from 'react-router-dom';
 import Checkout from './Checkout.js';
 import {useState, useRef, useEffect} from "react";
-import ProductDetail from "./feature/productDetails/ProductDetail.js";
-import CommonHeader from './feature/commonHeader/CommonHeader.js';
-import Cart from './feature/cart/Cart.js';
-import Login from "./feature/login/LoginPage.tsx";
+import ProductDetail from "./feature/productDetails/ProductDetail";
+import CommonHeader from './feature/commonHeader/CommonHeader';
+import Cart from './feature/cart/Cart';
+// import Login from "./feature/login/LoginPage";
 import Registration from "./feature/registration/RegistrationPage";
-import Chatbot from "./feature/chatbot/Chatbot.tsx";
-import LoginPageWithSb from "./feature/login/LoginPageWithSb.tsx";
-import PaymentConfirmationPage from "./feature/payment/PaymentConfirmationPage.tsx";
-import PaymentErrorPage from "./feature/payment/PaymentErrorPage.tsx";
-import CheckoutPage from "./feature/checkout/CheckoutPage.tsx";
-import OrderPage from "./feature/order/OrderPage.tsx";
+import LoginPageWithSb from "./feature/login/LoginPageWithSb";
+import PaymentConfirmationPage from "./feature/payment/PaymentConfirmationPage";
+import PaymentErrorPage from "./feature/payment/PaymentErrorPage";
+import CheckoutPage from "./feature/checkout/CheckoutPage";
+import OrderPage from "./feature/order/OrderPage";
+import Chatbot from "./feature/chatbot/Chatbot";
 function App() {
     const [stateCount, setStateCount] = useState(0);
     const refCount = useRef(0);
     //for login token
-    const [token, setToken] = useState();
-    const [isRegister, setIsRegister] = useState(false);
+    const [token, setToken] = useState<string>();
+    const [isRegister, setIsRegister] = useState<boolean>(false);
     const whitelist = [''];
     const location = useLocation();
 
@@ -48,7 +46,6 @@ function App() {
                     <Route path='/payment-success' element={<PaymentConfirmationPage />} />
                     <Route path='/payment-error' element={<PaymentErrorPage />} />
                     <Route path='/view-order' element={<OrderPage />} />
-
                 </Routes>
                 <Chatbot />
             </div>

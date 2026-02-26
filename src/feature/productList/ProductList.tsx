@@ -4,19 +4,21 @@ import {PUBLIC_ASSETS_URL} from "../../Constant";
 import style from "./productList.module.css"
 import { useSelector, useDispatch } from 'react-redux';
 import {addItem} from '../../state/cartSlice'
+import { RootState } from "../../redux/store";
+import { Product } from "../type/EShopCommonTypes";
 
 export default function ProductList() {
 
-    let productList = [
+    let productList: Product[] = [
         {"id": 1, "name": "Apple", "price": 10, "image": "apple.png", "description": "this is apple"},
         {"id": 2, "name": "Orange", "price": 5, "image": "orange.png", "description": "this is orange"}
     ]
     const [product, setProduct] = useState()
 
     const dispatch = useDispatch()
-    const cart = useSelector((state) => state.cart)
+    const cart = useSelector((state:RootState) => state.cart)
 
-    const addItemToCart = (product) => {
+    const addItemToCart = (product: Product) => {
         console.log("clicked add to cart")
         dispatch(addItem(product))
     }

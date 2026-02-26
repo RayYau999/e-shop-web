@@ -1,39 +1,39 @@
-import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
-import {PUBLIC_ASSETS_URL} from "../../Constant";
-import {clearItems} from '../../state/cartSlice'
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid2';
-import Item from '@mui/material/Grid';
-import {Container, Row, Col, Button} from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearItems } from '../../state/cartSlice'
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import style from './Cart.module.css'
-import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Product } from "../type/EShopCommonTypes";
+import type { RootState } from '../../redux/store';
+
+type CountMap = Record<string, number>;
 
 export default function Cart() {
     const navigate = useNavigate();
-    const cart = useSelector((state) => state.cart)
-    const [countArray, setCountArray] = useState([]);
+    const cart = useSelector((state:RootState) => state.cart)
+    const [countArray, setCountArray] = useState<CountMap>({});
     const [isEmpty, setIsEmpty] = useState(false);
     const dispatch = useDispatch()
-    const totalAmount = cart.items.reduce((total, product) => total + product.price, 0);
+    const totalAmount = cart.items.reduce((total:any, product:any) => total + product.price, 0);
 
     const handleClearCartClick = () => {
         dispatch(clearItems());
     }
 
-    const findProductById = (id) => {
+    const findProductById = (id: string) => {
         return cart.items.find(product => product.id === parseInt(id))
     }
     useEffect(() => {
-        setCountArray(cart.items.reduce((acc, product) => {
-            acc[product.id] = (acc[product.id] || 0) + 1;
+        const counts = cart.items.reduce((acc: CountMap, product: Product) => {
+            const key = product.id.toString();
+            acc[key] = (acc[key] || 0) + 1;
             return acc;
-        }, {}));
+        }, {} as CountMap);
 
         console.log(countArray);
-        console.log("totalAmount: "+ totalAmount)
-
+        console.log("totalAmount: " + totalAmount)
+        setCountArray(counts);
         setIsEmpty(cart.items.length === 0);
     }, [cart.items]);
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {fetchEShopData, useGetJwt} from '../common/EShopCommonFetch.tsx'
-import EShopCommonFetchProps from "../type/EShopCommonTypes";
+import {fetchEShopData, useGetJwt} from '../common/EShopCommonFetch'
+import {EShopCommonFetchProps} from "../type/EShopCommonTypes";
 import {Button} from 'react-bootstrap';
 const OrderPage = () => {
     // const jwt = useSelector((state: any) => state.jwt)
@@ -16,17 +16,17 @@ const OrderPage = () => {
     useEffect(() => {
 
         console.log("jwt in order page: ", jwt)
-        // async function fetchData() {
-        //     // const res = await fetch('http://localhost:8081/orders/1/1', {
-        //     //     method: 'GET',
-        //     //     headers: {
-        //     //         'Authorization': 'Bearer ' + jwt.token,
-        //     //         'Accept': 'application/json'
-        //     //     },
-        //     //     signal: controller.signal
-        //     // });
-        //     console.log("res: ", await res.json());
-        // }
+        async function fetchData() {
+            const res = await fetch('http://localhost:8081/orders/1/1', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + jwt,
+                    'Accept': 'application/json'
+                },
+                signal: controller.signal
+            });
+            console.log("res: ", await res.json());
+        }
         try {
             console.log("showing reqData in order page: ", reqData);
             fetchEShopData(reqData);

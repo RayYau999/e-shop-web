@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { EShopCommonFetchProps, PaymentStatus } from "../type/EShopCommonTypes";
 import { useEffect } from "react";
-import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch.tsx";
+import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
 
 const PaymentConfirmationPage = () => {
     const navigate = useNavigate();
