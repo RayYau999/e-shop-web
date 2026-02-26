@@ -1,7 +1,5 @@
 import ChatBot from "react-chatbotify";
-import LlmConnector, {LlmConnectorBlock } from "@rcb-plugins/llm-connector";
 import { GeminiProvider } from "@rcb-plugins/llm-connector";
-import { OpenaiProvider } from "@rcb-plugins/llm-connector";
 import { useEffect } from "react";
 import { Block } from "react-chatbotify/dist/types/Block";
 import { EShopCommonFetchProps, McpRequestMsg, McpResponseMsg } from "../type/EShopCommonTypes";
@@ -70,12 +68,7 @@ const Chatbot = () => {
     }, []);
 
     return (
-        <div>
-        <h1>Chatbot Feature</h1>
-            <span>testing</span>
-        <p>This is the chatbot feature of the application.</p>
-            <ChatBot flow={flow}/>
-        </div>
+      <ChatBot flow={flow}/>
     );
 }
 
