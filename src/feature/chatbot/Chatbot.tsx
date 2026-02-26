@@ -65,27 +65,12 @@ const Chatbot = () => {
         // ... other blocks as necessary
     }
 
-    const  handleClick = async() => {
-        console.log("button clicked");
-        const res = await fetch("http://localhost:9090/ai-chat", {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: "hello, this is ray"
-        });
-        console.log("res: ", res.text());
-        // await fetch("http://localhost:9090/ai-chat", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "text/plain" },
-        //     body: "hello, this is ray"
-        // });
-    }
     useEffect(() => {
         console.log("Chatbot component mounted");
     }, []);
 
     return (
         <div>
-            <button onClick={() => {handleClick()}}> testing ai button</button>
         <h1>Chatbot Feature</h1>
             <span>testing</span>
         <p>This is the chatbot feature of the application.</p>
