@@ -4,7 +4,7 @@ import style from './CheckoutPage.module.css'
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import PaypalButtonLogic from "../payment/PaypalButtonLogic";
-import {useState, useEffect} from "react";
+import { useState, useEffect, useMemo } from "react";
 import { OrderReqDto, ProductDto } from "../type/EShopCommonTypes";
 import { RootState } from "../../redux/store";
 
@@ -17,15 +17,35 @@ export default function CheckoutPage() {
     const totalAmount:number = cart.items.reduce((total, product) => total + product.price, 0);
     const clientId = process.env.REACT_APP_PAYPAL_CLIENT_ID;
 
+    // var orderDto: OrderReqDto = {
+    //     products: [],
+    //     totalPrice: totalAmount
+    // };
+
+    const counts = useMemo(() => {
+        return cart.items.reduce<Record<string, number>>((acc, product) => {
+            const key = String(product.id);
+            acc[key] = (acc[key] || 0) + 1;
+            return acc;
+        }, {});
+    }, [cart.items]);
+
+    const orderDto: OrderReqDto = useMemo<OrderReqDto>(() => {
+        const products = Object.keys(counts).map(id => {
+            const p = cart.items.find(prod => prod.id === parseInt(id));
+            return {
+                productId: String(p?.id ?? parseInt(id)),
+                quantity: counts[id],
+                price: p?.price ?? 0,
+            };
+        });
+
+        return { products, totalPrice: totalAmount };
+    }, [counts, totalAmount, cart.items]);
 
     const findProductById = (id:string) => {
         return cart.items.find((product: { id: number; }) => product.id === parseInt(id))
     }
-
-    const orderDto: OrderReqDto = {
-        products: [],
-        totalPrice: totalAmount
-    };
 
     //This function is outdated because it will call many order query to DB
     // const setProductObjById = (id:string) => {
@@ -34,16 +54,17 @@ export default function CheckoutPage() {
     //     console.log("pushed product to orderDto: ", orderDto);
     // }
     useEffect(() => {
-        setCountArray(cart.items.reduce<Record<string, number>>((acc, product) => {
-            const key = String(product.id);
-            acc[key] = (acc[key] || 0) + 1;
-            return acc;
-        }, {}));
-
-        console.log(countArray);
+        // setCountArray(cart.items.reduce<Record<string, number>>((acc, product) => {
+        //     const key = String(product.id);
+        //     acc[key] = (acc[key] || 0) + 1;
+        //     return acc;
+        // }, {}));
+        //
+        // console.log("countArray: ", countArray);
         console.log("totalAmount: "+ totalAmount)
         console.log("show clientId", clientId)
 
+        console.log("orderDto in checkout page: ", orderDto);
         setIsEmpty(cart.items.length === 0);
     }, [cart.items]);
 
@@ -67,15 +88,15 @@ export default function CheckoutPage() {
                 <div>
                     <Row>
                         {
-                            Object.keys(countArray).map(id => {
+                            Object.keys(counts).map(id => {
                                 const product = findProductById(id);
                                 if (!product) return null; //to prevent undefined product
                                 return (
                                     <Col xs={10} md={10} key={id}>
                                         <div className={style.cartContainer}>
                                             <div>Product name: {product.name}</div>
-                                            <div>Number of order: {countArray[id]}</div>
-                                            <div>Price: {product.price * countArray[id]}</div>
+                                            <div>Number of order: {counts[id]}</div>
+                                            <div>Price: {product.price * counts[id]}</div>
                                         </div>
                                     </Col>
                                 );

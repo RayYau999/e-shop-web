@@ -1,9 +1,9 @@
 
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch";
-import { EShopCommonFetchProps, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes";
+import { CreateNonPaidOrderResponse, EShopCommonFetchProps, McpResponseMsg, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes";
 
 interface PayPalCaptureDetails {
     id?: string;
@@ -24,10 +24,13 @@ interface PayPalButtonLogicProps {
     orderDto: OrderReqDto;
 }
 
+type ApiResult = { response: Response; data: CreateNonPaidOrderResponse };
+
 const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
     const [loading, setLoading] = useState(false); // Loading state
     const navigate = useNavigate();
     const jwt = useGetJwt();
+    const [orderRefId, setOrderRefId] = useState<string | undefined>(undefined);
 
     const handlePaymentSuccess = async (details: PayPalCaptureDetails) => {
         console.log("Payment Successful testing:", details);
@@ -36,8 +39,9 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
 
         const captureId = details.purchase_units?.[0]?.payments?.captures?.[0]?.id;
 
+        console.log("orderRefId: ", orderRefId);
         const reqData: EShopCommonFetchProps = {
-            path: `http://localhost:8081/webhook/paypal/status/${captureId}`,
+            path: `http://localhost:8081/webhook/paypal/status/${captureId}/${orderRefId}`,
             method: 'GET',
             jwt: jwt
         }
@@ -95,11 +99,31 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
         checkPaymentStatus();
     };
 
+    const createOrder = async() => {
+        const requestBody: OrderReqDto = {
+            products: orderDto.products,
+            totalPrice: orderDto.totalPrice
+        }
+
+        const reqData: EShopCommonFetchProps = {
+            path: `http://localhost:8081/non-paid-orders`,
+            method: 'POST',
+            jwt: jwt,
+            body: requestBody
+        }
+        const apiResult: ApiResult = await fetchEShopData(reqData);
+        console.log("apiResult form create order ref id: ", apiResult.data.orderRefId);
+
+        setOrderRefId(apiResult.data.orderRefId);
+        return apiResult.data.orderRefId;
+    }
+
     return (
         <>
             {loading && <div>Loading... Please wait</div>}
             <PayPalButtons
                 createOrder={(data, actions) => {
+                    createOrder().then(r => console.log("Order created successfully: ", r)).catch(e => console.error("Error creating order:", e));
                     return actions.order.create({
                         intent: "CAPTURE",
                         purchase_units: [

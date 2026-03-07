@@ -62,3 +62,9 @@ export interface McpRequestMsg {
 export interface McpResponseMsg {
     mcpResponse: string;
 }
+
+export interface CreateNonPaidOrderResponse {
+    message: string;
+    timestamp: string;
+    orderRefId: string;
+}

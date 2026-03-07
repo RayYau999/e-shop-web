@@ -5,15 +5,20 @@ import style from "./productList.module.css"
 import { useSelector, useDispatch } from 'react-redux';
 import {addItem} from '../../state/cartSlice'
 import { RootState } from "../../redux/store";
-import { Product } from "../type/EShopCommonTypes";
+import { CreateNonPaidOrderResponse, EShopCommonFetchProps, Product } from "../type/EShopCommonTypes";
+import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
+
+type ApiResult = { response: Response; data: Product[] };
 
 export default function ProductList() {
+
+    const jwt = useGetJwt();
 
     let productList: Product[] = [
         {"id": 1, "name": "Apple", "price": 10, "image": "apple.png", "description": "this is apple"},
         {"id": 2, "name": "Orange", "price": 5, "image": "orange.png", "description": "this is orange"}
     ]
-    const [product, setProduct] = useState()
+    const [products, setProducts] = useState<Product[] | undefined>()
 
     const dispatch = useDispatch()
     const cart = useSelector((state:RootState) => state.cart)
@@ -26,7 +31,28 @@ export default function ProductList() {
 
     useEffect(() => {
         console.log('cart:', cart); // This will log the updated state
-    }, [cart]);
+        let cancelled = false;
+        const fetchProducts = async (): Promise<void> => {
+            const reqData: EShopCommonFetchProps = {
+                path: 'http://localhost:8083/product/all-products-on-sell',
+                method: 'GET',
+                jwt: jwt
+            };
+
+            try {
+                const apiResult: ApiResult = await fetchEShopData(reqData);
+                if (!cancelled) setProducts(apiResult.data);
+            } catch (err) {
+                if (!cancelled) console.error('Failed to fetch products', err);
+            }
+        };
+
+        fetchProducts();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [cart, jwt]);
 
     return (
 
@@ -41,11 +67,11 @@ export default function ProductList() {
             
             <div className={style.productListDiv}>
                 {
-                    productList.map(product =>
+                    products?.map(product =>
                         <div key={product.id} className={style.productItem}>
                             {product.name}<br/>
                              price: {product.price}<br/>
-                            <img className={style.productImage} src={PUBLIC_ASSETS_URL + product.image} alt="product pic"></img><br/>
+                            <img className={style.productImage} src={product.image} alt="product pic"></img><br/>
                             {product.description}<br/>
                             <button onClick={() => addItemToCart(product)}>Add to cart</button>
                         </div>
