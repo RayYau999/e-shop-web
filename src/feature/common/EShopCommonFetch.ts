@@ -16,17 +16,28 @@ const useGetJwt = ():string => {
 }
 
 async function fetchEShopData<T = any>(props: EShopCommonFetchProps): Promise<ApiResult<T>> {
-    const jwt = props.jwt ?? "";
+    const jwt = props.jwt;
     const controller = new AbortController();
+
+    var customHeader: HeadersInit = {};
+
+    if(typeof jwt !== 'undefined') {
+        customHeader = {
+            'Authorization': 'Bearer ' + jwt,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    } else {
+        customHeader = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
 
     console.log("showing jwt in fetchEShopData: ", jwt);
     const res = await fetch(props.path, {
         method: props.method,
-        headers: {
-            'Authorization': 'Bearer ' + jwt,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        headers: customHeader,
         body: props.body ? JSON.stringify(props.body) : undefined,
         signal: controller.signal
     });

@@ -1,7 +1,7 @@
 export interface EShopCommonFetchProps {
     path: string,
     method: string,
-    jwt: string,
+    jwt?: string,
     body?: any
 }
 

@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useState } from 'react';
 import * as PropTypes from 'prop-types';
 import './LoginPage.module.css';
-import {Button} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import {addToken} from '../../state/jwtSlice'
+import { Button } from "react-bootstrap";
+import { addToken } from '../../state/jwtSlice'
 import { useDispatch } from "react-redux";
-import {Credentials} from "../type/EShopCommonTypes";
+import { Credentials, EShopCommonFetchProps } from "../type/EShopCommonTypes";
+import { fetchEShopData } from "../common/EShopCommonFetch";
 
 const apiUrl = process.env.REACT_APP_SB_API_URL;
 
@@ -21,26 +21,27 @@ type LoginPageWithSbProps = {
     setIsRegister: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-async function loginUser(credentials: Credentials) {
-    console.log(JSON.stringify(credentials))
-    console.log("apiUrl: ", apiUrl)
-    return fetch(apiUrl + '/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}
+type ApiResult = { response: Response; data: AuthResponse };
 
 export default function LoginPageWithSb({ setToken, setIsRegister }: LoginPageWithSbProps) {
-
     const dispatch = useDispatch()
-    const navigate = useNavigate();
 
     const [username, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+
+    async function loginUser(credentials: Credentials) {
+        console.log(JSON.stringify(credentials))
+        console.log("apiUrl: ", apiUrl)
+
+        const reqData: EShopCommonFetchProps = {
+            path: apiUrl + '/login',
+            method: 'POST',
+            body: credentials
+        }
+        const apiResult: ApiResult = await fetchEShopData(reqData);
+
+        return apiResult.data;
+    }
 
     const handleSubmit = async (e:  React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
