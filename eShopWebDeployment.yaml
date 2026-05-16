@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: e-shop-web
-          image: e-shop-web:latest
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/rayyau999/my-eshop-app:${WEB_TAG}
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
               protocol: TCP

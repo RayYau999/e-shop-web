@@ -10,6 +10,8 @@ import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
 
 type ApiResult = { response: Response; data: Product[] };
 
+const apiUrl = process.env.REACT_APP_SB_API_URL;
+
 export default function ProductList() {
 
     const jwt = useGetJwt();
@@ -34,7 +36,7 @@ export default function ProductList() {
         let cancelled = false;
         const fetchProducts = async (): Promise<void> => {
             const reqData: EShopCommonFetchProps = {
-                path: 'http://localhost:8083/product/all-products-on-sell',
+                path: apiUrl + '/product/all-products-on-sell',
                 method: 'GET',
                 jwt: jwt
             };
