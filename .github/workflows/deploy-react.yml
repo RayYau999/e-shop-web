@@ -37,6 +37,9 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
+          build-args: |
+            REACT_APP_PAYPAL_WEBHOOK_ID=${{ secrets.REACT_APP_PAYPAL_WEBHOOK_ID }}
+            REACT_APP_PAYPAL_CLIENT_ID=${{ secrets.REACT_APP_PAYPAL_CLIENT_ID }}
           context: .
           file: ./Dockerfile
           push: true

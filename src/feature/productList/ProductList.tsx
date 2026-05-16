@@ -7,10 +7,11 @@ import {addItem} from '../../state/cartSlice'
 import { RootState } from "../../redux/store";
 import { CreateNonPaidOrderResponse, EShopCommonFetchProps, Product } from "../type/EShopCommonTypes";
 import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
+import { APP_CONFIG } from "../../config/appConfig";
 
 type ApiResult = { response: Response; data: Product[] };
 
-const apiUrl = process.env.REACT_APP_SB_API_URL;
+const apiUrl = APP_CONFIG.SB_API_URL;
 
 export default function ProductList() {
 

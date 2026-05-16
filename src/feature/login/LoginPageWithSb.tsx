@@ -7,8 +7,9 @@ import { addToken } from '../../state/jwtSlice'
 import { useDispatch } from "react-redux";
 import { Credentials, EShopCommonFetchProps } from "../type/EShopCommonTypes";
 import { fetchEShopData } from "../common/EShopCommonFetch";
+import { APP_CONFIG } from "../../config/appConfig";
 
-const apiUrl = process.env.REACT_APP_SB_API_URL;
+const apiUrl = APP_CONFIG.SB_API_URL;
 
 interface AuthResponse {
     token: string;

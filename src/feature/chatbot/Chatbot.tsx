@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import { Block } from "react-chatbotify/dist/types/Block";
 import { EShopCommonFetchProps, McpRequestMsg, McpResponseMsg } from "../type/EShopCommonTypes";
 import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
+import { APP_CONFIG } from "../../config/appConfig";
 
 type ApiResult = { response: Response; data: McpResponseMsg };
-const apiUrl = process.env.REACT_APP_SB_API_URL;
-const mcpApiPath = process.env.REACT_APP_MCP_CLIENT_PATH;
+const apiUrl = APP_CONFIG.SB_API_URL;
+const mcpApiPath = APP_CONFIG.MCP_CLIENT_PATH;
 const mcpUrl = `${apiUrl}${mcpApiPath}`;
 
 const Chatbot = () => {
