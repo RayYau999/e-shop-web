@@ -14,8 +14,12 @@ FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy React build files to Nginx's public directory
-COPY build/ /usr/share/nginx/html
-#COPY --from=build /app/build /usr/share/nginx/html  -- this is for build in docker
+
+#this "COPY" is for local build
+#COPY build/ /usr/share/nginx/html
+
+#this "COPY" is for build in docker
+COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy custom Nginx config (optional)
 # COPY nginx.conf /etc/nginx/nginx.conf
