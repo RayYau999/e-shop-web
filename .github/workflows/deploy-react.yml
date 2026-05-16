@@ -29,11 +29,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_PAT }}
 
-      # 把倉庫名字轉成全小寫（因為 GHCR 規定 Image 名字不能有大寫字母）
-      - name: Downcase repository name
-        run: |
-          echo "IMAGE_NAME=ghcr.io/${{ github.repository }}/my-eshop-app" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
-
       # 設定 Docker Buildx（支援多平台 & 快取）
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -47,8 +42,8 @@ jobs:
           push: true
           # 同時打上 latest 標籤以及當前 Git Commit 的雜湊值（方便追溯版本）
           tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/my-eshop-app:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_OWNER }}/my-eshop-app:${{ github.sha }}
 
   deploy:
     needs: build-and-push-react
