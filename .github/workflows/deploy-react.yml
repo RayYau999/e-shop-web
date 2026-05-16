@@ -47,7 +47,7 @@ jobs:
 
   deploy:
     needs: build-and-push-react
-    runs-on: [self-hosted, k3s-server]
+    runs-on: [self-hosted, k3s-web-server]
     env:
       WEB_TAG: ${{ github.sha }}
     steps:
