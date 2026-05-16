@@ -3,7 +3,7 @@ name: Build and Push React to GHCR
 on:
   push:
     branches:
-      - main  # 當你 push 到 main 分支時自動執行
+      - feat/k3s-deployment  # 當你 push 到 main 分支時自動執行
 
 permissions:
   contents: read
