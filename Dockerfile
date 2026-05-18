@@ -6,10 +6,6 @@ COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
 
-# debug
-RUN echo "PAYPAL_CLIENT_ID length: ${#REACT_APP_PAYPAL_CLIENT_ID}" && \
-    echo "PAYPAL_WEBHOOK_ID length: ${#REACT_APP_PAYPAL_WEBHOOK_ID}" && \
-
 # contruct arguments for build command
 ARG REACT_APP_PAYPAL_CLIENT_ID
 ENV REACT_APP_PAYPAL_CLIENT_ID=$REACT_APP_PAYPAL_CLIENT_ID
@@ -17,7 +13,9 @@ ENV REACT_APP_PAYPAL_CLIENT_ID=$REACT_APP_PAYPAL_CLIENT_ID
 ARG REACT_APP_PAYPAL_WEBHOOK_ID
 ENV REACT_APP_PAYPAL_WEBHOOK_ID=$REACT_APP_PAYPAL_WEBHOOK_ID
 
-RUN npm run build
+RUN echo "PAYPAL_CLIENT_ID length: ${#REACT_APP_PAYPAL_CLIENT_ID}" && \
+    echo "PAYPAL_WEBHOOK_ID length: ${#REACT_APP_PAYPAL_WEBHOOK_ID}" && \
+    npm run build
 
 # Use official Nginx image
 FROM nginx:alpine
