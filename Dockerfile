@@ -5,6 +5,14 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 COPY . .
+
+# contruct arguments for build command
+ARG REACT_APP_PAYPAL_CLIENT_ID
+ENV REACT_APP_PAYPAL_CLIENT_ID=$REACT_APP_PAYPAL_CLIENT_ID
+
+ARG REACT_APP_PAYPAL_WEBHOOK_ID
+ENV REACT_APP_PAYPAL_WEBHOOK_ID=$REACT_APP_PAYPAL_WEBHOOK_ID
+
 RUN npm run build
 
 # Use official Nginx image
