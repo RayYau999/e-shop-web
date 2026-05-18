@@ -33,6 +33,21 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # debug
+      - name: Debug secret presence
+        run: |
+          if [ -z "${{ secrets.REACT_APP_PAYPAL_CLIENT_ID }}" ]; then
+            echo "REACT_APP_PAYPAL_CLIENT_ID is empty"
+          else
+            echo "REACT_APP_PAYPAL_CLIENT_ID is set"
+          fi
+          
+          if [ -z "${{ secrets.REACT_APP_PAYPAL_WEBHOOK_ID }}" ]; then
+            echo "REACT_APP_PAYPAL_WEBHOOK_ID is empty"
+          else
+            echo "REACT_APP_PAYPAL_WEBHOOK_ID is set"
+          fi
+
       # 開始打包並推送 React Image
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
