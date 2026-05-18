@@ -80,6 +80,9 @@ export default function CheckoutPage() {
     const handlePaymentError = () => {
         console.log("Payment error!");
     }
+    if (!clientId) {
+        return <Container>Missing PayPal client id</Container>;
+    }
     return (
         <Container>
             <h2>Check your cart</h2>
@@ -108,7 +111,7 @@ export default function CheckoutPage() {
                     <h2>Pay now</h2>
                     <PayPalScriptProvider
                         options={{
-                            clientId: clientId??"", // Replace with your actual PayPal Client ID
+                            clientId: clientId, // Replace with your actual PayPal Client ID
                             currency: "USD", // Adjust the currency code as needed
                         }}
                     >
