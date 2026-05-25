@@ -4,6 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
 import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch";
 import { CreateNonPaidOrderResponse, EShopCommonFetchProps, McpResponseMsg, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes";
+import { APP_CONFIG } from "../../config/appConfig";
+
+const apiUrl = APP_CONFIG.SB_API_URL;
+const paypalWebhookApiPath = APP_CONFIG.PAYPAL_WEBHOOK;
+const nonPaidOrdersPath = APP_CONFIG.PYMT_NON_PAID_ORDER;
+const paypalWebhookUrl = `${apiUrl}${paypalWebhookApiPath}`;
+const nonPaidOrdersUrl = `${apiUrl}${nonPaidOrdersPath}`;
 
 interface PayPalCaptureDetails {
     id?: string;
@@ -41,7 +48,7 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
 
         console.log("orderRefId: ", orderRefId);
         const reqData: EShopCommonFetchProps = {
-            path: `http://localhost:8081/webhook/paypal/status/${captureId}/${orderRefId}`,
+            path: paypalWebhookUrl + `/${captureId}/${orderRefId}`,
             method: 'GET',
             jwt: jwt
         }
@@ -106,7 +113,7 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
         }
 
         const reqData: EShopCommonFetchProps = {
-            path: `http://localhost:8081/non-paid-orders`,
+            path: nonPaidOrdersUrl,
             method: 'POST',
             jwt: jwt,
             body: requestBody
