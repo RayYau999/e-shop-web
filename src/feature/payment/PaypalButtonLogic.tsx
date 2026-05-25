@@ -9,7 +9,7 @@ import { APP_CONFIG } from "../../config/appConfig";
 const apiUrl = APP_CONFIG.SB_API_URL;
 const paypalWebhookApiPath = APP_CONFIG.PAYPAL_WEBHOOK;
 const nonPaidOrdersPath = APP_CONFIG.PYMT_NON_PAID_ORDER;
-const paypalWebhookUrl = `${apiUrl}${paypalWebhookApiPath}`;
+const paypalWebhookUrl = `${paypalWebhookApiPath}`;
 const nonPaidOrdersUrl = `${apiUrl}${nonPaidOrdersPath}`;
 
 interface PayPalCaptureDetails {
