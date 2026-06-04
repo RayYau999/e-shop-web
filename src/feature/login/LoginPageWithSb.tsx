@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import * as PropTypes from 'prop-types';
-import './LoginPage.module.css';
-import { Button } from "react-bootstrap";
+import styles from './LoginPage.module.css';
 import { addToken } from '../../state/jwtSlice'
 import { useDispatch } from "react-redux";
 import { Credentials, EShopCommonFetchProps } from "../type/EShopCommonTypes";
@@ -79,24 +78,53 @@ export default function LoginPageWithSb({ setToken, setIsRegister }: LoginPageWi
     }
 
     return(
-        <div className="login-wrapper">
-            <h2>This is jwt login implementation with Spring boot</h2>
-            <h1>Please Log In</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <p>Username</p>
-                    <input type="text" onChange={e => setUserName(e.target.value)} />
-                </label>
-                <label>
-                    <p>Password</p>
-                    <input type="password" onChange={e => setPassword(e.target.value)} />
-                </label>
-                <div>
-                    <button type="submit">Submit</button>
+        <div className={styles.wrapper}>
+            <div className={styles.card}>
+                <div className={styles.logo}>
+                    <div className={styles.logoIcon}>KT</div>
+                    <h1 className={styles.title}>Welcome back</h1>
+                    <p className={styles.subtitle}>Sign in to your account to continue</p>
                 </div>
-            </form>
-            <Button onClick={handleRegistration}>Register</Button>
-            <Button onClick={bypassLogin}>Bypass login button</Button>
+
+                <form onSubmit={handleSubmit}>
+                    <div className={styles.field}>
+                        <label className={styles.label}>Username</label>
+                        <input
+                            className={styles.input}
+                            type="text"
+                            placeholder="Enter your username"
+                            onChange={e => setUserName(e.target.value)}
+                        />
+                    </div>
+                    <div className={styles.field}>
+                        <label className={styles.label}>Password</label>
+                        <input
+                            className={styles.input}
+                            type="password"
+                            placeholder="Enter your password"
+                            onChange={e => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <button className={styles.submitButton} type="submit">Sign In</button>
+                </form>
+
+                <div className={styles.divider}>
+                    <span className={styles.dividerLine} />
+                    <span className={styles.dividerText}>or</span>
+                    <span className={styles.dividerLine} />
+                </div>
+
+                <div className={styles.secondaryActions}>
+                    <button className={styles.secondaryButton} onClick={handleRegistration}>
+                        Create New Account
+                    </button>
+                    <button className={styles.bypassButton} onClick={bypassLogin}>
+                        Continue as Guest
+                    </button>
+                </div>
+
+                <p className={styles.footer}>This is JWT login with Spring Boot backend</p>
+            </div>
         </div>
     )
 }
