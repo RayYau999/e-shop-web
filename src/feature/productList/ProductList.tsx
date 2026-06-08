@@ -1,7 +1,7 @@
 // @ts-ignore
 import React, {use, useState, useEffect} from 'react'
 import {PUBLIC_ASSETS_URL} from "../../Constant";
-import style from "./productList.module.css"
+import styles from "./productList.module.css"
 import { useSelector, useDispatch } from 'react-redux';
 import {addItem} from '../../state/cartSlice'
 import { RootState } from "../../redux/store";
@@ -58,31 +58,32 @@ export default function ProductList() {
     }, [cart, jwt]);
 
     return (
-
-    <div>
-    
-        <h3>Choose your product</h3>
-        <div>
-            <span>Cart: {cart.length}</span>
-        </div>
- 
-        <div className={style.productListContainer}>
-            
-            <div className={style.productListDiv}>
-                {
-                    products?.map(product =>
-                        <div key={product.id} className={style.productItem}>
-                            {product.name}<br/>
-                             price: {product.price}<br/>
-                            <img className={style.productImage} src={product.image} alt="product pic"></img><br/>
-                            {product.description}<br/>
-                            <button onClick={() => addItemToCart(product)}>Add to cart</button>
-                        </div>
-                    )
-                }
+        <div className={styles.page}>
+            <div className={styles.header}>
+                <h1 className={styles.title}>Products</h1>
+                <div className={styles.cartBadge}>
+                    Cart
+                    <span className={styles.cartCount}>{cart.length}</span>
+                </div>
             </div>
 
+            <div className={styles.grid}>
+                {products?.map(product =>
+                    <div key={product.id} className={styles.card}>
+                        <div className={styles.imageWrapper}>
+                            <img className={styles.image} src={product.image} alt={product.name} />
+                        </div>
+                        <h2 className={styles.productName}>{product.name}</h2>
+                        <p className={styles.productDesc}>{product.description}</p>
+                        <div className={styles.priceRow}>
+                            <span className={styles.price}>${product.price}</span>
+                            <button className={styles.addButton} onClick={() => addItemToCart(product)}>
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
-    </div>
-  )
+    )
 }
