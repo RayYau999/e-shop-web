@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useCallback } from "react";
 import { EShopCommonFetchProps } from "../type/EShopCommonTypes";
 import { RootState } from "../../redux/store";
+import { setError } from "../../state/errorSlice";
 
 type ApiResult<T> = { response: Response; data: T };
 
@@ -51,4 +53,20 @@ async function fetchEShopData<T = any>(props: EShopCommonFetchProps): Promise<Ap
 
 }
 
-export { fetchEShopData, useGetJwt };
+function useFetchEShopData() {
+    const dispatch = useDispatch();
+
+    const fetchWithError = useCallback(async function <T = any>(props: EShopCommonFetchProps): Promise<ApiResult<T>> {
+        try {
+            return await fetchEShopData<T>(props);
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'An unexpected error occurred';
+            dispatch(setError(message));
+            throw err;
+        }
+    }, [dispatch]);
+
+    return fetchWithError;
+}
+
+export { fetchEShopData, useFetchEShopData, useGetJwt };

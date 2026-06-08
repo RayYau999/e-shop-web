@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {addItem} from '../../state/cartSlice'
 import { RootState } from "../../redux/store";
 import { CreateNonPaidOrderResponse, EShopCommonFetchProps, Product } from "../type/EShopCommonTypes";
-import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
+import { useFetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
 import { APP_CONFIG } from "../../config/appConfig";
 
 type ApiResult = { response: Response; data: Product[] };
@@ -16,6 +16,7 @@ const apiUrl = APP_CONFIG.SB_API_URL;
 export default function ProductList() {
 
     const jwt = useGetJwt();
+    const fetchEShopData = useFetchEShopData();
 
     let productList: Product[] = [
         {"id": 1, "name": "Apple", "price": 10, "image": "apple.png", "description": "this is apple"},
@@ -33,7 +34,7 @@ export default function ProductList() {
 
 
     useEffect(() => {
-        console.log('cart:', cart); // This will log the updated state
+        console.log('cart:', cart);
         let cancelled = false;
         const fetchProducts = async (): Promise<void> => {
             const reqData: EShopCommonFetchProps = {
@@ -55,7 +56,7 @@ export default function ProductList() {
         return () => {
             cancelled = true;
         };
-    }, [cart, jwt]);
+    }, [cart, jwt, fetchEShopData]);
 
     return (
         <div className={styles.page}>

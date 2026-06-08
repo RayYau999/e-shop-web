@@ -14,7 +14,11 @@ import PaymentErrorPage from "./feature/payment/PaymentErrorPage";
 import CheckoutPage from "./feature/checkout/CheckoutPage";
 import OrderPage from "./feature/order/OrderPage";
 import Chatbot from "./feature/chatbot/Chatbot";
-function App() {
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "./redux/store";
+import { clearError } from "./state/errorSlice";
+import ErrorPage from "./feature/error/ErrorPage";
+function AppInner() {
     const [stateCount, setStateCount] = useState(0);
     const refCount = useRef(0);
     //for login token
@@ -22,6 +26,18 @@ function App() {
     const [isRegister, setIsRegister] = useState<boolean>(false);
     const whitelist = [''];
     const location = useLocation();
+    const errorMessage = useSelector((state: RootState) => state.error.message);
+    const dispatch = useDispatch();
+
+    if (errorMessage) {
+        return (
+            <ErrorPage
+                message={errorMessage}
+                onSignIn={() => { dispatch(clearError()); setToken(undefined); }}
+                onGoHome={() => dispatch(clearError())}
+            />
+        );
+    }
 
     if (!token && !whitelist.includes(location.pathname)) {
         console.log("isRegister: ", isRegister)
@@ -51,6 +67,10 @@ function App() {
             </div>
         </div>
     );
+}
+
+function App() {
+    return <AppInner />;
 }
 
 export default App;
