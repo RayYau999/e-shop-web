@@ -3,7 +3,7 @@ import { GeminiProvider } from "@rcb-plugins/llm-connector";
 import { useEffect } from "react";
 import { Block } from "react-chatbotify/dist/types/Block";
 import { EShopCommonFetchProps, McpRequestMsg, McpResponseMsg } from "../type/EShopCommonTypes";
-import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
+import { useFetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
 import { APP_CONFIG } from "../../config/appConfig";
 
 type ApiResult = { response: Response; data: McpResponseMsg };
@@ -17,6 +17,7 @@ const Chatbot = () => {
     }
 
     const jwt = useGetJwt();
+    const fetchEShopData = useFetchEShopData();
     const gemini = new GeminiProvider({
         mode: "direct",                     // "direct" or "proxy"
         model: "gemini-1.5-flash",          // required

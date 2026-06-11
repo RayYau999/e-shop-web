@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {fetchEShopData, useGetJwt} from '../common/EShopCommonFetch'
+import {useFetchEShopData, useGetJwt} from '../common/EShopCommonFetch'
 import {EShopCommonFetchProps} from "../type/EShopCommonTypes";
 import {Button} from 'react-bootstrap';
 const OrderPage = () => {
     // const jwt = useSelector((state: any) => state.jwt)
     const jwt = useGetJwt();
+    const fetchEShopData = useFetchEShopData();
     const controller = new AbortController();
 
     const reqData: EShopCommonFetchProps = {

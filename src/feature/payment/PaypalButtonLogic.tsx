@@ -2,7 +2,9 @@
 import { PayPalButtons } from "@paypal/react-paypal-js";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
-import {fetchEShopData, useGetJwt} from "../common/EShopCommonFetch";
+import { useDispatch } from "react-redux";
+import { setError } from "../../state/errorSlice";
+import {fetchEShopData, useFetchEShopData, useGetJwt} from "../common/EShopCommonFetch";
 import { CreateNonPaidOrderResponse, EShopCommonFetchProps, McpResponseMsg, OrderReqDto, PaymentStatus, PaymentStatusDto } from "../type/EShopCommonTypes";
 import { APP_CONFIG } from "../../config/appConfig";
 
@@ -37,6 +39,8 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
     const [loading, setLoading] = useState(false); // Loading state
     const navigate = useNavigate();
     const jwt = useGetJwt();
+    const dispatch = useDispatch();
+    const fetchWithError = useFetchEShopData();
     const [orderRefId, setOrderRefId] = useState<string | undefined>(undefined);
 
     const handlePaymentSuccess = async (details: PayPalCaptureDetails) => {
@@ -87,6 +91,10 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
                     console.log("Payment still pending...");
                 }
             } catch (error: any) {
+                if (error.message?.includes("403")) {
+                    dispatch(setError("Session expired. Please sign in again."));
+                    return;
+                }
                 console.error("Error while checking payment status:", error.message);
             }
 
@@ -118,7 +126,7 @@ const PayPalButtonLogic = ({totalAmount, orderDto}: PayPalButtonLogicProps) => {
             jwt: jwt,
             body: requestBody
         }
-        const apiResult: ApiResult = await fetchEShopData(reqData);
+        const apiResult: ApiResult = await fetchWithError(reqData);
         console.log("apiResult form create order ref id: ", apiResult.data.orderRefId);
 
         setOrderRefId(apiResult.data.orderRefId);

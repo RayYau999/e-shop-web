@@ -1,7 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { EShopCommonFetchProps, PaymentStatus } from "../type/EShopCommonTypes";
 import { useEffect } from "react";
-import { fetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
+import { useFetchEShopData, useGetJwt } from "../common/EShopCommonFetch";
 
 const PaymentConfirmationPage = () => {
     const navigate = useNavigate();
@@ -10,6 +10,7 @@ const PaymentConfirmationPage = () => {
         navigate("/"); // Redirect to the homepage or any desired route
     };
     const jwt = useGetJwt();
+    const fetchEShopData = useFetchEShopData();
 
     const reqData: EShopCommonFetchProps = {
         path: `http://localhost:8081/after-payment/${paymentDetails.paymentId}`,
